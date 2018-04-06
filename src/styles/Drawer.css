@@ -1,0 +1,14 @@
+:drawer {
+	--drawer-width: 240;
+}
+
+.app-drawer {
+	position: relative;
+	width: var(--drawer-width);
+}
+
+.app-bar: {
+	width: 100% - var(--drawer-width);
+	margin-left: var(--drawer-width);
+	height: 185;
+}
