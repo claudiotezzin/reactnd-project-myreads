@@ -1,6 +1,5 @@
 import React from 'react';
-import * as BooksAPI from '../api/BooksAPI';
-import '../styles/App.css';
+import AppNavbar from './AppNavbar';
 
 class BooksApp extends React.Component {
 	state = {
@@ -8,7 +7,7 @@ class BooksApp extends React.Component {
 	};
 
 	render() {
-		return <div>JERE</div>;
+		return <AppNavbar />;
 	}
 }
 
