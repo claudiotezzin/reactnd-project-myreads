@@ -7,7 +7,7 @@ import {
 	Row,
 	ButtonGroup
 } from 'reactstrap';
-import 'styles/bookcard.css';
+import 'styles/css/bookcard.css';
 
 class BookCard extends React.Component {
 	state = { rSelected: 0 };
@@ -22,17 +22,18 @@ class BookCard extends React.Component {
 	render() {
 		return (
 			<Card className="card-container mx-auto">
-				<button
+				<Button
 					type="button"
-					className="btn btn-success px-3 book-info rounded-circle ml-auto">
+					color="light"
+					className="btn px-3 book-info rounded-circle ml-auto">
 					<i className="fa fa-info" aria-hidden="true" />
-				</button>
+				</Button>
 
 				<CardBody className="book-card-body">
 					<CardTitle className="card-title">Card title</CardTitle>
 					<Row>
 						<img
-							className="book-cover mx-auto"
+							className="book-cover border border-primary mx-auto"
 							src="http://via.placeholder.com/150x250"
 							alt="Card cap"
 						/>
@@ -41,25 +42,25 @@ class BookCard extends React.Component {
 				<Row noGutters>
 					<ButtonGroup className="btn-block">
 						<Button
-							className="button-flat"
-							color="primary"
+							className="button-flat btn-reading btn-secondary"
+							color="default"
 							onClick={() => this.onRadioBtnClick(1)}
 							active={this.state.rSelected === 1}>
-							One
+							Reading
 						</Button>
 						<Button
-							className="button-flat"
-							color="primary"
+							className="button-flat btn-to-read btn-secondary"
+							color="default"
 							onClick={() => this.onRadioBtnClick(2)}
 							active={this.state.rSelected === 2}>
-							Two
+							To Read
 						</Button>
 						<Button
-							className="button-flat"
-							color="primary"
+							className="button-flat btn-read btn-secondary"
+							color="default"
 							onClick={() => this.onRadioBtnClick(3)}
 							active={this.state.rSelected === 3}>
-							Three
+							Read
 						</Button>
 					</ButtonGroup>
 				</Row>

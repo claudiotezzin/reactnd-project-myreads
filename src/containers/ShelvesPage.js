@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row } from 'reactstrap';
 import BookCard from 'components/BookCard';
-import 'styles/shelvespage.css';
+import 'styles/css/shelvespage.css';
 
 class ShelvesPage extends React.Component {
 	state = {};

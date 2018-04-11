@@ -1,19 +1,25 @@
 {
 	"dependencies": {
+		"bootstrap": "4.0.0",
+		"jquery": "1.9.1",
+		"node-sass": "^4.8.3",
+		"npm-run-all": "^4.1.2",
+		"popper.js": "^1.12.9",
 		"prop-types": "^15.5.8",
 		"react": "^16.0.0",
 		"react-dom": "^16.0.0",
-		"jquery": "1.9.1",
-		"popper.js": "^1.12.9",
-		"bootstrap": "4.0.0",
 		"reactstrap": "5.0.0"
 	},
 	"devDependencies": {
 		"react-scripts": "0.9.5"
 	},
 	"scripts": {
-		"start": "NODE_PATH=src react-scripts start",
-		"build": "react-scripts build",
+		"build-js": "react-scripts build",
+		"start-js": "NODE_PATH=src react-scripts start",
+		"watch-scss": "node-sass --watch ./src/styles/scss -o ./src/styles/css",
+		"build-scss": "node-sass ./src/styles/scss -o ./src/styles/css",
+		"build": "npm-run-all -p build-scss build-js",
+		"start": "npm-run-all -p watch-scss start-js",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject"
 	}

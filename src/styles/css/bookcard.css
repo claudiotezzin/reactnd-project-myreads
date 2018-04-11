@@ -1,0 +1,56 @@
+.card-container {
+	width: 250px;
+	margin: 20px;
+}
+
+.book-card-body {
+	padding-top: 0 !important;
+}
+
+.card-title {
+	text-align: center;
+}
+
+.book-cover {
+	width: 70%;
+	align-content: center;
+}
+
+.book-info {
+	margin: 8px 8px 0px;
+}
+
+.button-flat {
+	width: 100%;
+	border-radius: 0 !important;
+}
+
+.btn-reading.active {
+	background-color: #3cd9b8 !important;
+	border: 0 !important;
+}
+
+.btn-reading:focus,
+.btn-reading.focus {
+	box-shadow: 0 0 0 0.2rem #3cd9b8 !important;
+}
+
+.btn-to-read.active {
+	background-color: #fef6c4 !important;
+	border: 0 !important;
+}
+
+.btn-to-read:focus,
+.btn-to-read.focus {
+	box-shadow: 0 0 0 0.2rem #fef6c4 !important;
+}
+
+.btn-read.active {
+	background-color: #ff89b6 !important;
+	border: 0 !important;
+}
+
+.btn-read:focus,
+.btn-read.focus {
+	box-shadow: 0 0 0 0.2rem #ff89b6 !important;
+}
