@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Badge } from 'reactstrap';
 
-const ShelvesFilter = ({ shelves, shownShelf }) => {
+const ShelvesFilter = ({ shelves, shownShelf, onFilterChanged }) => {
 	const getTotalBooks = () => {
 		let totalCount = 0;
 		for (const shelf of shelves) {
@@ -17,7 +17,7 @@ const ShelvesFilter = ({ shelves, shownShelf }) => {
 				className="filter-button btn-all"
 				color="default"
 				outline
-				onClick={() => {}}
+				onClick={() => onFilterChanged(0)}
 				active={shownShelf === 0}>
 				All{' '}
 				<Badge color="secondary" className="badge-books-count">
@@ -36,7 +36,7 @@ const ShelvesFilter = ({ shelves, shownShelf }) => {
 					color="default"
 					outline
 					key={shelf.id}
-					onClick={() => {}}
+					onClick={() => onFilterChanged(shelf.id)}
 					active={shownShelf === shelf.id}>
 					{`${shelf.name} `}
 					<Badge color="secondary" className="badge-books-count">

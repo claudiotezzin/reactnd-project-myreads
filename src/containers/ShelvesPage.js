@@ -55,36 +55,40 @@ class ShelvesPage extends React.Component {
 		});
 	}
 
-	onRadioBtnClick(currentSelected) {
-		this.setState((state) => ({
-			shownShelf:
-				currentSelected === this.state.radioButtonSelected
-					? 0
-					: currentSelected
-		}));
-	}
+	onFilterChanged = (currentFilterSelected) => {
+		this.setState({ shownShelf: currentFilterSelected });
+	};
 
 	render() {
-		const { readingShelf, wantToReadShelf, readShelf } = this.state;
+		const {
+			readingShelf,
+			wantToReadShelf,
+			readShelf,
+			shownShelf
+		} = this.state;
 
 		return (
 			<div className="container shelves-container">
 				<ShelvesFilter
-					shownShelf={this.state.shownShelf}
+					shownShelf={shownShelf}
 					shelves={[readingShelf, wantToReadShelf, readShelf]}
+					onFilterChanged={this.onFilterChanged}
 				/>
 
-				{readingShelf.books.length <= 0 || (
-					<SingleShelf shelf={readingShelf} />
-				)}
+				{(shownShelf === 0 || shownShelf === readingShelf.id) &&
+					readingShelf.books.length > 0 && (
+						<SingleShelf shelf={readingShelf} />
+					)}
 
-				{wantToReadShelf.books.length <= 0 || (
-					<SingleShelf shelf={wantToReadShelf} />
-				)}
+				{(shownShelf === 0 || shownShelf === wantToReadShelf.id) &&
+					wantToReadShelf.books.length > 0 && (
+						<SingleShelf shelf={wantToReadShelf} />
+					)}
 
-				{readShelf.books.length <= 0 || (
-					<SingleShelf shelf={readShelf} />
-				)}
+				{(shownShelf === 0 || shownShelf === readShelf.id) &&
+					readShelf.books.length > 0 && (
+						<SingleShelf shelf={readShelf} />
+					)}
 			</div>
 		);
 	}
