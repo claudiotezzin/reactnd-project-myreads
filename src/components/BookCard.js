@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
 	Card,
 	CardBody,
@@ -7,10 +8,13 @@ import {
 	Row,
 	ButtonGroup
 } from 'reactstrap';
-import 'styles/css/bookcard.css';
 
 class BookCard extends React.Component {
-	state = { rSelected: 0 };
+	static propTypes = {
+		book: PropTypes.object.isRequired
+	};
+
+	state = { rSelected: this.props.shelfId };
 
 	onRadioBtnClick(currentSelected) {
 		this.setState((state) => ({
@@ -20,25 +24,26 @@ class BookCard extends React.Component {
 	}
 
 	render() {
+		const { book } = this.props;
+
 		return (
 			<Card className="card-container mx-auto">
+				<CardBody className="book-card-body">
+					<CardTitle className="card-title">{book.title}</CardTitle>
+					<Row className="">
+						<img
+							className="book-cover rounded border mx-auto"
+							src={book.imageLinks.thumbnail}
+							alt="Card cap"
+						/>
+					</Row>
+				</CardBody>
 				<Button
 					type="button"
 					color="light"
 					className="btn px-3 book-info rounded-circle ml-auto">
 					<i className="fa fa-info" aria-hidden="true" />
 				</Button>
-
-				<CardBody className="book-card-body">
-					<CardTitle className="card-title">Card title</CardTitle>
-					<Row>
-						<img
-							className="book-cover border border-primary mx-auto"
-							src="http://via.placeholder.com/150x250"
-							alt="Card cap"
-						/>
-					</Row>
-				</CardBody>
 				<Row noGutters>
 					<ButtonGroup className="btn-block">
 						<Button

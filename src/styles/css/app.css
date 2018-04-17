@@ -1,0 +1,105 @@
+/* NAVBAR */
+.brand {
+	font-family: 'Permanent Marker', cursive;
+}
+
+.navbar {
+	background-color: white;
+	box-shadow: 0px 4px 3px #d2d2d2;
+}
+
+.navLink {
+	font-size: 1.4em;
+	margin: 0.5rem;
+}
+
+/* MY SHELVES */
+.shelves-container {
+	margin: 30px 30px 30px 30px;
+}
+
+.badge-books-count {
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 65% !important;
+}
+.filtered-items-container {
+	margin: 40px;
+}
+
+.filter-button {
+	margin: 20px;
+	border-radius: 0.25rem !important;
+}
+
+.debug {
+	border: dashed 2px red !important;
+}
+
+/* BOOK CARD */
+.card-container {
+	width: 250px;
+	margin: 20px;
+}
+
+.card-title {
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.book-cover {
+	width: 70%;
+	height: 250px;
+	box-shadow: 6px 4px 3px #d2d2d2;
+	align-content: center;
+}
+
+.book-info {
+	margin: 0px 8px 8px;
+}
+
+.button-flat {
+	width: 100%;
+	border-radius: 0 !important;
+}
+
+.btn-all.active {
+	background-color: #0080ff !important;
+	border: 0 !important;
+}
+
+.btn-all:focus,
+.btn-all.focus {
+	box-shadow: 0 0 0 0.2rem #0080ff !important;
+}
+
+.btn-reading.active {
+	background-color: #3cd9b8 !important;
+	border: 0 !important;
+}
+
+.btn-reading:focus,
+.btn-reading.focus {
+	box-shadow: 0 0 0 0.2rem #3cd9b8 !important;
+}
+
+.btn-to-read.active {
+	background-color: #fef6c4 !important;
+	border: 0 !important;
+}
+
+.btn-to-read:focus,
+.btn-to-read.focus {
+	box-shadow: 0 0 0 0.2rem #fef6c4 !important;
+}
+
+.btn-read.active {
+	background-color: #ff89b6 !important;
+	border: 0 !important;
+}
+
+.btn-read:focus,
+.btn-read.focus {
+	box-shadow: 0 0 0 0.2rem #ff89b6 !important;
+}

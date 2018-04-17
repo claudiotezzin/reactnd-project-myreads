@@ -13,3 +13,5 @@ body {
 	font-weight: 500 !important;
 	background-color: #f2f2f2 !important;
 }
+
+@import 'app.css';

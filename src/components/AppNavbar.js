@@ -8,7 +8,6 @@ import {
 	NavItem,
 	NavLink
 } from 'reactstrap';
-import 'styles/css/appnavbar.css';
 
 class AppNavbar extends React.Component {
 	state = {
