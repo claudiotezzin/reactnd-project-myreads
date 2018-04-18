@@ -12,6 +12,12 @@ const headers = {
 	Authorization: token
 };
 
+const shelfIdMap = new Map([
+	[1, { shelf: 'currentlyReading' }],
+	[2, { shelf: 'wantToRead' }],
+	[3, { shelf: 'read' }]
+]);
+
 export const get = (bookId) =>
 	fetch(`${api}/books/${bookId}`, { headers })
 		.then((res) => res.json())
@@ -22,14 +28,14 @@ export const getAll = () =>
 		.then((res) => res.json())
 		.then((data) => data.books);
 
-export const update = (book, shelf) =>
+export const update = (book, shelfId) =>
 	fetch(`${api}/books/${book.id}`, {
 		method: 'PUT',
 		headers: {
 			...headers,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ shelf })
+		body: JSON.stringify(shelfIdMap.get(shelfId))
 	}).then((res) => res.json());
 
 export const search = (query) =>

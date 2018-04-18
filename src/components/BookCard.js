@@ -11,15 +11,24 @@ import {
 
 class BookCard extends React.Component {
 	static propTypes = {
-		book: PropTypes.object.isRequired
+		book: PropTypes.object.isRequired,
+		onUpdateBookShelf: PropTypes.func.isRequired
 	};
 
-	state = { rSelected: this.props.shelfId };
+	state = { shelfSelected: this.props.shelfId };
 
 	onRadioBtnClick(currentSelected) {
+		const newShelfId =
+			currentSelected === this.state.shelfSelected ? 0 : currentSelected;
+
+		this.props.onUpdateBookShelf(
+			this.props.book,
+			this.state.shelfSelected,
+			currentSelected
+		);
+
 		this.setState((state) => ({
-			rSelected:
-				currentSelected === this.state.rSelected ? 0 : currentSelected
+			shelfSelected: newShelfId
 		}));
 	}
 
@@ -27,7 +36,7 @@ class BookCard extends React.Component {
 		const { book } = this.props;
 
 		return (
-			<Card className="card-container mx-auto">
+			<Card className="card-container">
 				<CardBody className="book-card-body">
 					<CardTitle className="card-title">{book.title}</CardTitle>
 					<Row className="">
@@ -50,21 +59,21 @@ class BookCard extends React.Component {
 							className="button-flat btn-reading btn-secondary"
 							color="default"
 							onClick={() => this.onRadioBtnClick(1)}
-							active={this.state.rSelected === 1}>
+							active={this.state.shelfSelected === 1}>
 							Reading
 						</Button>
 						<Button
 							className="button-flat btn-to-read btn-secondary"
 							color="default"
 							onClick={() => this.onRadioBtnClick(2)}
-							active={this.state.rSelected === 2}>
+							active={this.state.shelfSelected === 2}>
 							To Read
 						</Button>
 						<Button
 							className="button-flat btn-read btn-secondary"
 							color="default"
 							onClick={() => this.onRadioBtnClick(3)}
-							active={this.state.rSelected === 3}>
+							active={this.state.shelfSelected === 3}>
 							Read
 						</Button>
 					</ButtonGroup>
