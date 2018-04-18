@@ -1,10 +1,12 @@
 import React from 'react';
 import SingleShelf from 'components/SingleShelf';
 import ShelvesFilter from 'components/ShelvesFilter';
+import LoadingBooks from 'components/LoadingBooks';
 import * as BooksAPI from 'api/BooksAPI';
 
 class ShelvesPage extends React.Component {
 	state = {
+		isLoading: true,
 		shownShelf: 0, // 0 - All, 1 - Reading, 2 - To read, 3 - Read
 		shelves: {
 			readingShelf: {
@@ -43,6 +45,7 @@ class ShelvesPage extends React.Component {
 					prevState.shelves.readingShelf.books = readingBooks;
 					prevState.shelves.wantToReadShelf.books = wantToReadBooks;
 					prevState.shelves.readShelf.books = readBooks;
+					prevState.isLoading = false;
 					return prevState;
 				});
 			});
@@ -80,15 +83,19 @@ class ShelvesPage extends React.Component {
 
 	render() {
 		const { readingShelf, wantToReadShelf, readShelf } = this.state.shelves;
-		const { shownShelf } = this.state;
+		const { shownShelf, isLoading } = this.state;
 
 		return (
-			<div className="container-fluid shelves-container">
-				<ShelvesFilter
-					shownShelf={shownShelf}
-					shelves={[readingShelf, wantToReadShelf, readShelf]}
-					onFilterChanged={this.onFilterChanged}
-				/>
+			<div className="container-fluid">
+				{isLoading && <LoadingBooks />}
+
+				{!isLoading && (
+					<ShelvesFilter
+						shownShelf={shownShelf}
+						shelves={[readingShelf, wantToReadShelf, readShelf]}
+						onFilterChanged={this.onFilterChanged}
+					/>
+				)}
 
 				{(shownShelf === 0 || shownShelf === readingShelf.id) &&
 					readingShelf.books.length > 0 && (

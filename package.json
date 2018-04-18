@@ -1,4 +1,6 @@
 {
+	"name": "myreads",
+	"version": "1.0.0",
 	"dependencies": {
 		"bootstrap": "4.0.0",
 		"jquery": "1.9.1",
@@ -11,7 +13,7 @@
 		"reactstrap": "5.0.0"
 	},
 	"devDependencies": {
-		"react-scripts": "0.9.5"
+		"react-scripts": "^1.0.0"
 	},
 	"scripts": {
 		"build-js": "react-scripts build",

@@ -14,10 +14,6 @@
 }
 
 /* MY SHELVES */
-.shelves-container {
-	margin: 30px;
-}
-
 .badge-books-count {
 	font-family: 'Roboto', sans-serif !important;
 	font-size: 65% !important;
@@ -103,3 +99,5 @@
 .btn-read.focus {
 	box-shadow: 0 0 0 0.2rem #ff89b6 !important;
 }
+
+@@import "loading.css";

@@ -15,12 +15,13 @@ const SingleShelf = ({ shelf, onUpdateBookShelf }) => {
 					<hr />
 				</Col>
 			</Row>
-			<Row>
+			<Row className="justify-content-center">
 				{shelf.books.map((book) => (
 					<BookCard
 						onUpdateBookShelf={onUpdateBookShelf}
 						key={book.id}
 						book={book}
+						isChangingState={false}
 						shelfId={shelf.id}
 					/>
 				))}

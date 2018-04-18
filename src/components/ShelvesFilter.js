@@ -18,32 +18,37 @@ const ShelvesFilter = ({ shelves, shownShelf, onFilterChanged }) => {
 				color="default"
 				outline
 				onClick={() => onFilterChanged(0)}
-				active={shownShelf === 0}>
+				active={shownShelf === 0}
+			>
 				All{' '}
 				<Badge color="secondary" className="badge-books-count">
 					{getTotalBooks()}
 				</Badge>
 			</Button>
-			{shelves.map((shelf) => (
-				<Button
-					className={
-						shelf.id === 1
-							? 'filter-button btn-reading'
-							: shelf.id === 2
-								? 'filter-button btn-to-read'
-								: 'filter-button btn-read'
-					}
-					color="default"
-					outline
-					key={shelf.id}
-					onClick={() => onFilterChanged(shelf.id)}
-					active={shownShelf === shelf.id}>
-					{`${shelf.name} `}
-					<Badge color="secondary" className="badge-books-count">
-						{shelf.books.length}
-					</Badge>
-				</Button>
-			))}
+			{shelves.map(
+				(shelf) =>
+					shelf.books.length > 0 && (
+						<Button
+							className={
+								shelf.id === 1
+									? 'filter-button btn-reading'
+									: shelf.id === 2
+										? 'filter-button btn-to-read'
+										: 'filter-button btn-read'
+							}
+							color="default"
+							outline
+							key={shelf.id}
+							onClick={() => onFilterChanged(shelf.id)}
+							active={shownShelf === shelf.id}
+						>
+							{`${shelf.name} `}
+							<Badge color="secondary" className="badge-books-count">
+								{shelf.books.length}
+							</Badge>
+						</Button>
+					)
+			)}
 		</ButtonGroup>
 	);
 };
