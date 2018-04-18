@@ -12,11 +12,7 @@ const headers = {
 	Authorization: token
 };
 
-const shelfIdMap = new Map([
-	[1, { shelf: 'currentlyReading' }],
-	[2, { shelf: 'wantToRead' }],
-	[3, { shelf: 'read' }]
-]);
+const shelfIdMapper = ['none', 'currentlyReading', 'wantToRead', 'read'];
 
 export const get = (bookId) =>
 	fetch(`${api}/books/${bookId}`, { headers })
@@ -35,7 +31,7 @@ export const update = (book, shelfId) =>
 			...headers,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify(shelfIdMap.get(shelfId))
+		body: JSON.stringify({ shelf: shelfIdMapper[shelfId] })
 	}).then((res) => res.json());
 
 export const search = (query) =>

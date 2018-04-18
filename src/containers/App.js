@@ -1,5 +1,7 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import AppNavbar from 'components/AppNavbar';
+import Footer from 'components/Footer';
 import ShelvesPage from 'containers/ShelvesPage';
 
 class App extends React.Component {
@@ -11,7 +13,8 @@ class App extends React.Component {
 		return (
 			<div>
 				<AppNavbar />
-				<ShelvesPage />
+				<Route exact path="/" render={() => <ShelvesPage />} />
+				<Footer />
 			</div>
 		);
 	}

@@ -37,7 +37,7 @@ class BookCard extends React.Component {
 						<img
 							className="book-cover rounded border mx-auto"
 							src={book.imageLinks.thumbnail}
-							alt="Card cap"
+							alt={book.name}
 						/>
 					</Row>
 				</CardBody>

@@ -2,6 +2,7 @@ import React from 'react';
 import SingleShelf from 'components/SingleShelf';
 import ShelvesFilter from 'components/ShelvesFilter';
 import LoadingBooks from 'components/LoadingBooks';
+import EmptyState from 'components/EmptyState';
 import * as BooksAPI from 'api/BooksAPI';
 
 class ShelvesPage extends React.Component {
@@ -57,18 +58,20 @@ class ShelvesPage extends React.Component {
 	};
 
 	onUpdateBookShelf = (changedBook, oldShelfId, newShelfId) => {
-		BooksAPI.update(changedBook, newShelfId).then((shelfs) => {
-			this.setState((prevState) => {
-				const { readingShelf, wantToReadShelf, readShelf } = prevState.shelves;
-				this.updateShelfIfNeeded(readingShelf, changedBook, oldShelfId, newShelfId);
-				this.updateShelfIfNeeded(wantToReadShelf, changedBook, oldShelfId, newShelfId);
-				this.updateShelfIfNeeded(readShelf, changedBook, oldShelfId, newShelfId);
-				prevState.shelves.readingShelf = readingShelf;
-				prevState.shelves.wantToReadShelf = wantToReadShelf;
-				prevState.shelves.readShelf = readShelf;
-				return prevState;
-			});
-		});
+		BooksAPI.update(changedBook, newShelfId === oldShelfId ? 0 : newShelfId)
+			.then((shelfs) => {
+				this.setState((prevState) => {
+					const { readingShelf, wantToReadShelf, readShelf } = prevState.shelves;
+					this.updateShelfIfNeeded(readingShelf, changedBook, oldShelfId, newShelfId);
+					this.updateShelfIfNeeded(wantToReadShelf, changedBook, oldShelfId, newShelfId);
+					this.updateShelfIfNeeded(readShelf, changedBook, oldShelfId, newShelfId);
+					prevState.shelves.readingShelf = readingShelf;
+					prevState.shelves.wantToReadShelf = wantToReadShelf;
+					prevState.shelves.readShelf = readShelf;
+					return prevState;
+				});
+			})
+			.catch((error) => console.error(`Error updating book shelf. Error: ${error}`));
 	};
 
 	updateShelfIfNeeded(shelf, changedBook, oldShelfId, newShelfId) {
@@ -86,7 +89,7 @@ class ShelvesPage extends React.Component {
 		const { shownShelf, isLoading } = this.state;
 
 		return (
-			<div className="container-fluid">
+			<div className="container main-content">
 				{isLoading && <LoadingBooks />}
 
 				{!isLoading && (
@@ -117,6 +120,12 @@ class ShelvesPage extends React.Component {
 					readShelf.books.length > 0 && (
 						<SingleShelf onUpdateBookShelf={this.onUpdateBookShelf} shelf={readShelf} />
 					)}
+
+				{// Empty state if there is no book
+				!isLoading &&
+					readingShelf.books.length <= 0 &&
+					wantToReadShelf.books.length <= 0 &&
+					readShelf.books.length <= 0 && <EmptyState />}
 			</div>
 		);
 	}

@@ -11,20 +11,24 @@ const ShelvesFilter = ({ shelves, shownShelf, onFilterChanged }) => {
 		return totalCount;
 	};
 
+	const isEmpty = shelves.filter((shelf) => shelf.books.length > 0).length === 0;
+
 	return (
 		<ButtonGroup size="md">
-			<Button
-				className="filter-button btn-all"
-				color="default"
-				outline
-				onClick={() => onFilterChanged(0)}
-				active={shownShelf === 0}
-			>
-				All{' '}
-				<Badge color="secondary" className="badge-books-count">
-					{getTotalBooks()}
-				</Badge>
-			</Button>
+			{!isEmpty && (
+				<Button
+					className="filter-button btn-all"
+					color="default"
+					outline
+					onClick={() => onFilterChanged(0)}
+					active={shownShelf === 0}
+				>
+					All{' '}
+					<Badge color="secondary" className="badge-books-count">
+						{getTotalBooks()}
+					</Badge>
+				</Button>
+			)}
 			{shelves.map(
 				(shelf) =>
 					shelf.books.length > 0 && (
