@@ -11,13 +11,14 @@
 		"react": "^16.0.0",
 		"react-dom": "^16.0.0",
 		"react-router-dom": "^4.2.2",
+		"react-stars": "^2.2.5",
 		"reactstrap": "5.0.0"
 	},
 	"devDependencies": {
 		"react-scripts": "^1.0.0"
 	},
 	"scripts": {
-		"build-js": "react-scripts build",
+		"build-js": "NODE_PATH=src react-scripts build",
 		"start-js": "NODE_PATH=src react-scripts start",
 		"watch-scss": "node-sass --watch ./src/styles/scss -o ./src/styles/css",
 		"build-scss": "node-sass ./src/styles/scss -o ./src/styles/css",
