@@ -18,7 +18,7 @@
 
 .navbar {
 	background-color: white;
-	box-shadow: 0px 4px 3px #d2d2d2;
+	box-shadow: 0 4px 3px #d2d2d2;
 }
 
 .navLink {
@@ -66,7 +66,7 @@
 }
 
 .book-info {
-	margin: 0px 8px 8px;
+	margin: 0 8px 8px;
 }
 
 .button-flat {
@@ -116,6 +116,58 @@
 
 .rating-stars {
 	margin-left: 1rem;
+}
+
+/* SEARCH */
+
+.search-row {
+	margin-top: 2rem;
+}
+
+.search-label {
+	font-size: 2rem;
+	margin: 0 1rem 0 1rem;
+}
+
+.search-input {
+	width: 70%;
+}
+
+#tag {
+	margin: 6px;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.tags-row {
+	margin-top: 1rem;
+}
+
+.open-tags {
+	display: block;
+	width: 73px;
+	background: white;
+	background-image: url('../../icons/arrow-drop-down.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 28px;
+	font-size: 0;
+}
+
+.close-tags {
+	display: block;
+	width: 73px;
+	background: white;
+	background-image: url('../../icons/arrow-drop-down.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 28px;
+	font-size: 0;
+	transform: rotate(180deg);
+}
+
+.collapse-tags-panel {
+	background-color: #f2f2f2;
 }
 
 @@import "loading.css";

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, CardBody, CardTitle, Button, Row, ButtonGroup } from 'reactstrap';
 import LoadingIndicator from 'components/LoadingIndicator';
 import BookDetailModal from 'components/BookDetailModal';
+import { GetShelfIdFromName } from 'utils/helper.js';
 
 class BookCard extends React.Component {
 	static propTypes = {
@@ -12,7 +13,7 @@ class BookCard extends React.Component {
 	};
 
 	state = {
-		shelfSelected: this.props.shelfId,
+		shelfSelected: GetShelfIdFromName(this.props.book.shelf),
 		isChangingState: this.props.isChangingState,
 		showDetail: false
 	};
@@ -53,7 +54,7 @@ class BookCard extends React.Component {
 						<Row>
 							<img
 								className="book-cover rounded border mx-auto"
-								src={book.imageLinks.thumbnail}
+								src={book.imageLinks !== undefined ? book.imageLinks.thumbnail : ''}
 								alt={book.name}
 							/>
 						</Row>

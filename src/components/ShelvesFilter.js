@@ -33,20 +33,18 @@ const ShelvesFilter = ({ shelves, shownShelf, onFilterChanged }) => {
 				(shelf) =>
 					shelf.books.length > 0 && (
 						<Button
-							className={
+							className={`filter-button ${
 								shelf.id === 1
-									? 'filter-button btn-reading'
-									: shelf.id === 2
-										? 'filter-button btn-to-read'
-										: 'filter-button btn-read'
-							}
+									? 'btn-reading'
+									: shelf.id === 2 ? 'btn-to-read' : 'btn-read'
+							}`}
 							color="default"
 							outline
 							key={shelf.id}
 							onClick={() => onFilterChanged(shelf.id)}
 							active={shownShelf === shelf.id}
 						>
-							{`${shelf.name} `}
+							{`${shelf.displayName} `}
 							<Badge color="secondary" className="badge-books-count">
 								{shelf.books.length}
 							</Badge>

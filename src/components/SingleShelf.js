@@ -3,26 +3,27 @@ import PropTypes from 'prop-types';
 import { Row, Col, Label } from 'reactstrap';
 import BookCard from 'components/BookCard';
 
-const SingleShelf = ({ shelf, onUpdateBookShelf }) => {
+const SingleShelf = ({ shelfName, books, onUpdateBookShelf, shelfDisplayName }) => {
+	const singleShelfName = shelfDisplayName !== undefined ? shelfDisplayName : shelfName;
+
 	return (
 		<div>
 			<Row>
 				<Col>
 					<hr />
 				</Col>
-				<Label className="col-auto">{shelf.name}</Label>
+				<Label className="col-auto">{singleShelfName}</Label>
 				<Col>
 					<hr />
 				</Col>
 			</Row>
 			<Row className="justify-content-center">
-				{shelf.books.map((book) => (
+				{books.map((book) => (
 					<BookCard
 						onUpdateBookShelf={onUpdateBookShelf}
 						key={book.id}
 						book={book}
 						isChangingState={false}
-						shelfId={shelf.id}
 					/>
 				))}
 			</Row>
@@ -31,7 +32,8 @@ const SingleShelf = ({ shelf, onUpdateBookShelf }) => {
 };
 
 SingleShelf.propTypes = {
-	shelf: PropTypes.object.isRequired,
+	shelfName: PropTypes.string.isRequired,
+	books: PropTypes.array.isRequired,
 	onUpdateBookShelf: PropTypes.func.isRequired
 };
 

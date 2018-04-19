@@ -1,13 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Label } from 'reactstrap';
 
-const LoadingBooks = () => {
+const LoadingBooks = ({ message }) => {
 	return (
 		<div className="loading-indicator">
 			<Row>
-				<Label className="text-primary col-auto">
-					We are getting your books from the respective shelves...
-				</Label>
+				<Label className="text-primary col-auto">{message}</Label>
 			</Row>
 			<Row className="justify-content-center">
 				<svg width="16px" height="12px">
@@ -17,6 +16,10 @@ const LoadingBooks = () => {
 			</Row>
 		</div>
 	);
+};
+
+LoadingBooks.propTypes = {
+	message: PropTypes.string.isRequired
 };
 
 export default LoadingBooks;

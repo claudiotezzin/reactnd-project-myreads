@@ -34,8 +34,9 @@ export const update = (book, shelfId) =>
 		body: JSON.stringify({ shelf: shelfIdMapper[shelfId] })
 	}).then((res) => res.json());
 
-export const search = (query) =>
-	fetch(`${api}/search`, {
+export const search = (query) => {
+	console.log(JSON.stringify({ query }));
+	return fetch(`${api}/search`, {
 		method: 'POST',
 		headers: {
 			...headers,
@@ -45,3 +46,4 @@ export const search = (query) =>
 	})
 		.then((res) => res.json())
 		.then((data) => data.books);
+};

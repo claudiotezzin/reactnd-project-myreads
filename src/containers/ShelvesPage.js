@@ -1,57 +1,38 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SingleShelf from 'components/SingleShelf';
 import ShelvesFilter from 'components/ShelvesFilter';
-import LoadingBooks from 'components/LoadingBooks';
 import EmptyState from 'components/EmptyState';
 import * as BooksAPI from 'api/BooksAPI';
 
 class ShelvesPage extends React.Component {
+	static propTypes = {
+		myBooks: PropTypes.array.isRequired
+	};
+
 	state = {
-		isLoading: true,
 		shownShelf: 0, // 0 - All, 1 - Reading, 2 - To read, 3 - Read
 		shelves: {
 			readingShelf: {
 				id: 1,
-				name: 'Reading',
-				books: []
+				name: 'currentlyReading',
+				displayName: 'Reading',
+				books: this.props.myBooks.filter((book) => book.shelf === 'currentlyReading')
 			},
 			wantToReadShelf: {
 				id: 2,
-				name: 'To Read',
-				books: []
+				name: 'wantToRead',
+				displayName: 'To Read',
+				books: this.props.myBooks.filter((book) => book.shelf === 'wantToRead')
 			},
 			readShelf: {
 				id: 3,
-				name: 'Read',
-				books: []
+				name: 'read',
+				displayName: 'Read',
+				books: this.props.myBooks.filter((book) => book.shelf === 'read')
 			}
 		}
 	};
-
-	componentDidMount() {
-		BooksAPI.getAll().then((books) => {
-			let readBooks = [];
-			let wantToReadBooks = [];
-			let readingBooks = [];
-
-			books.map((book) => {
-				if (book.shelf === 'currentlyReading') {
-					readingBooks.push(book);
-				} else if (book.shelf === 'wantToRead') {
-					wantToReadBooks.push(book);
-				} else if (book.shelf === 'read') {
-					readBooks.push(book);
-				}
-				return this.setState((prevState) => {
-					prevState.shelves.readingShelf.books = readingBooks;
-					prevState.shelves.wantToReadShelf.books = wantToReadBooks;
-					prevState.shelves.readShelf.books = readBooks;
-					prevState.isLoading = false;
-					return prevState;
-				});
-			});
-		});
-	}
 
 	onFilterChanged = (currentFilterSelected) => {
 		this.setState({ shownShelf: currentFilterSelected });
@@ -86,25 +67,23 @@ class ShelvesPage extends React.Component {
 
 	render() {
 		const { readingShelf, wantToReadShelf, readShelf } = this.state.shelves;
-		const { shownShelf, isLoading } = this.state;
+		const { shownShelf } = this.state;
 
 		return (
 			<div className="container main-content">
-				{isLoading && <LoadingBooks />}
-
-				{!isLoading && (
-					<ShelvesFilter
-						shownShelf={shownShelf}
-						shelves={[readingShelf, wantToReadShelf, readShelf]}
-						onFilterChanged={this.onFilterChanged}
-					/>
-				)}
+				<ShelvesFilter
+					shownShelf={shownShelf}
+					shelves={[readingShelf, wantToReadShelf, readShelf]}
+					onFilterChanged={this.onFilterChanged}
+				/>
 
 				{(shownShelf === 0 || shownShelf === readingShelf.id) &&
 					readingShelf.books.length > 0 && (
 						<SingleShelf
 							onUpdateBookShelf={this.onUpdateBookShelf}
-							shelf={readingShelf}
+							books={readingShelf.books}
+							shelfName={readingShelf.name}
+							shelfDisplayName={readingShelf.displayName}
 						/>
 					)}
 
@@ -112,20 +91,28 @@ class ShelvesPage extends React.Component {
 					wantToReadShelf.books.length > 0 && (
 						<SingleShelf
 							onUpdateBookShelf={this.onUpdateBookShelf}
-							shelf={wantToReadShelf}
+							books={wantToReadShelf.books}
+							shelfName={wantToReadShelf.name}
+							shelfDisplayName={wantToReadShelf.displayName}
 						/>
 					)}
 
 				{(shownShelf === 0 || shownShelf === readShelf.id) &&
 					readShelf.books.length > 0 && (
-						<SingleShelf onUpdateBookShelf={this.onUpdateBookShelf} shelf={readShelf} />
+						<SingleShelf
+							onUpdateBookShelf={this.onUpdateBookShelf}
+							books={readShelf.books}
+							shelfName={readShelf.name}
+							shelfDisplayName={readShelf.displayName}
+						/>
 					)}
 
 				{// Empty state if there is no book
-				!isLoading &&
-					readingShelf.books.length <= 0 &&
+				readingShelf.books.length <= 0 &&
 					wantToReadShelf.books.length <= 0 &&
-					readShelf.books.length <= 0 && <EmptyState />}
+					readShelf.books.length <= 0 && (
+						<EmptyState message="You don't have any book in your shaves. Please add some books!!!" />
+					)}
 			</div>
 		);
 	}

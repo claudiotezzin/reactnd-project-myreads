@@ -1,0 +1,182 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Row, Label } from 'reactstrap';
+import SingleShelf from 'components/SingleShelf';
+import TagsCloud from 'components/TagsCloud';
+import EmptyState from 'components/EmptyState';
+import { DebounceInput } from 'react-debounce-input';
+import LoadingBooks from 'components/LoadingBooks';
+import * as BooksAPI from 'api/BooksAPI';
+
+class SearchPage extends React.Component {
+	state = {
+		query: '',
+		isSearching: false,
+		noResultsFound: false,
+		searchShelf: {
+			id: 0,
+			name: 'Search Result',
+			books: []
+		}
+	};
+
+	static propTypes = {
+		myBooks: PropTypes.array.isRequired
+	};
+
+	availableTags = [
+		'Android',
+		'Art',
+		'Artificial Intelligence',
+		'Astronomy',
+		'Austen',
+		'Baseball',
+		'Basketball',
+		'Bhagat',
+		'Biography',
+		'Brief',
+		'Business',
+		'Camus',
+		'Cervantes',
+		'Christie',
+		'Classics',
+		'Comics',
+		'Cook',
+		'Cricket',
+		'Cycling',
+		'Desai',
+		'Design',
+		'Development',
+		'Digital Marketing',
+		'Drama',
+		'Drawing',
+		'Dumas',
+		'Education',
+		'Everything',
+		'Fantasy',
+		'Film',
+		'Finance',
+		'First',
+		'Fitness',
+		'Football',
+		'Future',
+		'Games',
+		'Gandhi',
+		'Homer',
+		'Horror',
+		'Hugo',
+		'Ibsen',
+		'Journey',
+		'Kafka',
+		'King',
+		'Lahiri',
+		'Larsson',
+		'Learn',
+		'Literary Fiction',
+		'Make',
+		'Manage',
+		'Marquez',
+		'Money',
+		'Mystery',
+		'Negotiate',
+		'Painting',
+		'Philosophy',
+		'Photography',
+		'Poetry',
+		'Production',
+		'Programming',
+		'React',
+		'Redux',
+		'River',
+		'Robotics',
+		'Rowling',
+		'Satire',
+		'Science Fiction',
+		'Shakespeare',
+		'Singh',
+		'Swimming',
+		'Tale',
+		'Thrun',
+		'Time',
+		'Tolstoy',
+		'Travel',
+		'Ultimate',
+		'Virtual Reality',
+		'Web Development',
+		'iOS'
+	];
+
+	onTagClicked = (tag) => {
+		this.setState({ query: tag });
+		this.onSearch(tag);
+	};
+
+	onSearch(query) {
+		this.setState({ isSearching: true });
+		BooksAPI.search(query)
+			.then((books) => {
+				const newBooksArray = books.map((book) => {
+					const bookFound = this.props.myBooks.find((myBook) => myBook.id === book.id);
+					return bookFound !== undefined ? bookFound : book;
+				});
+
+				this.setState((prevState) => {
+					prevState.isSearching = false;
+					prevState.noResultsFound = false;
+					prevState.searchShelf.books = newBooksArray;
+					return prevState;
+				});
+			})
+			.catch((err) => {
+				this.setState((prevState) => {
+					prevState.isSearching = false;
+					prevState.noResultsFound = true;
+					prevState.searchShelf.books = [];
+					return prevState;
+				});
+				console.log(err);
+			});
+	}
+
+	render() {
+		const { searchShelf, query, isSearching, noResultsFound } = this.state;
+
+		return (
+			<div className="container main-content">
+				{isSearching && (
+					<LoadingBooks message="We are getting your books from the respective shelves..." />
+				)}
+
+				<Row className="search-row">
+					<Label className="text-muted search-label">Search: </Label>
+					<DebounceInput
+						className="search-input"
+						minLength={3}
+						placeholder="Book Title"
+						debounceTimeout={500}
+						value={query}
+						onChange={(event) => this.onSearch(event.target.value)}
+					/>
+				</Row>
+
+				<TagsCloud tags={this.availableTags} onTagClicked={this.onTagClicked} />
+
+				{!isSearching &&
+					searchShelf.books.length > 0 && (
+						<SingleShelf
+							onUpdateBookShelf={this.onUpdateBookShelf}
+							books={searchShelf.books}
+							shelfName={'none'}
+							shelfDisplayName={'Search Result'}
+						/>
+					)}
+
+				{noResultsFound && (
+					<EmptyState message="Ops! We didn't found this book. Try to use our predefined tags below search box" />
+				)}
+			</div>
+		);
+	}
+}
+
+export default SearchPage;
