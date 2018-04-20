@@ -1,14 +1,13 @@
 import React from 'react';
+import { Row } from 'reactstrap';
+import ReactLoading from 'react-loading';
 
 const LoadingIndicator = () => {
 	return (
-		<div className="loading-indicator-bkg">
-			<div className="loading-indicator">
-				<svg width="16px" height="12px">
-					<polyline id="back" points="1 6 4 6 6 11 10 1 12 6 15 6" />
-					<polyline id="front" points="1 6 4 6 6 11 10 1 12 6 15 6" />
-				</svg>
-			</div>
+		<div className="debug loading-indicator-bkg">
+			<Row className="mx-auto justify-content-center">
+				<ReactLoading type="bubbles" color="#3cd9b8" height={250} width={100} />
+			</Row>
 		</div>
 	);
 };

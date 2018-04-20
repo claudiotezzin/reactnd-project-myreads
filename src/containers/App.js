@@ -1,10 +1,11 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import AppNavbar from 'components/AppNavbar';
+import { Row } from 'reactstrap';
 import Footer from 'components/Footer';
 import ShelvesPage from 'containers/ShelvesPage';
 import SearchPage from 'containers/SearchPage';
-import LoadingBooks from 'components/LoadingBooks';
+import ReactLoading from 'react-loading';
 import * as BooksAPI from 'api/BooksAPI';
 import { GetShelfNameFromId } from 'utils/helper.js';
 
@@ -57,7 +58,9 @@ class App extends React.Component {
 			<div>
 				<AppNavbar />
 				{this.state.isLoading && (
-					<LoadingBooks message="We are getting your books from the respective shelves..." />
+					<Row className="justify-content-center">
+						<ReactLoading type="bubbles" color="#3cd9b8" height={567} width={275} />
+					</Row>
 				)}
 
 				{!this.state.isLoading && (

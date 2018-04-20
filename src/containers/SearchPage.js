@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Label } from 'reactstrap';
+import ReactLoading from 'react-loading';
 import SingleShelf from 'components/SingleShelf';
 import TagsCloud from 'components/TagsCloud';
 import EmptyState from 'components/EmptyState';
 import { DebounceInput } from 'react-debounce-input';
-import LoadingBooks from 'components/LoadingBooks';
 import * as BooksAPI from 'api/BooksAPI';
 
 class SearchPage extends React.Component {
@@ -165,10 +165,9 @@ class SearchPage extends React.Component {
 				<TagsCloud tags={this.availableTags} onTagClicked={this.onSearch} />
 
 				{isSearching && (
-					<LoadingBooks
-						className="loading"
-						message="We are getting your books from the respective shelves..."
-					/>
+					<Row className="justify-content-center">
+						<ReactLoading type="bubbles" color="#3cd9b8" height={567} width={275} />
+					</Row>
 				)}
 
 				{!isSearching &&
