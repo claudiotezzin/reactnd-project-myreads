@@ -16,6 +16,9 @@ class BookCard extends React.Component {
 		showDetail: false
 	};
 
+	// This flag is used to control de shelf updating. It can't be a state
+	// because the components does not know when the updating is completed and
+	// can not be props because parent can't set when loading started
 	isUpdating = false;
 
 	onRadioBtnClick(currentSelected) {
@@ -23,7 +26,7 @@ class BookCard extends React.Component {
 
 		this.props.onUpdateBookShelf(this.props.book, oldShelfId, currentSelected);
 		this.isUpdating = true;
-		// this.forceUpdate();
+
 		this.setState((prevState) => ({
 			shelfSelected: currentSelected === prevState.shelfSelected ? 0 : currentSelected
 		}));
@@ -63,6 +66,7 @@ class BookCard extends React.Component {
 							/>
 						</Row>
 					</CardBody>
+
 					<Button
 						type="button"
 						color="light"
@@ -71,7 +75,9 @@ class BookCard extends React.Component {
 					>
 						<i className="fa fa-info" aria-hidden="true" />
 					</Button>
+
 					{this.isUpdating && <LoadingIndicator />}
+
 					<Row noGutters>
 						<ButtonGroup className="btn-block">
 							<Button

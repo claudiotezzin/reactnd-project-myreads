@@ -108,7 +108,6 @@ class SearchPage extends React.Component {
 	];
 
 	onSearch = (query) => {
-		console.log(`query: ${query}`);
 		if (query === '') {
 			this.setState((prevState) => {
 				prevState.isSearching = false;
@@ -120,7 +119,6 @@ class SearchPage extends React.Component {
 		} else {
 			this.setState({ isSearching: true, query: query });
 			BooksAPI.search(query).then((books) => {
-				console.log(`books.error: ${JSON.stringify(books.error)}`);
 				if (books.error === undefined) {
 					const newBooksArray = books.map((book) => {
 						const bookFound = this.props.myBooks.find(
