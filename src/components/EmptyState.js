@@ -3,22 +3,30 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Row, Label, Button } from 'reactstrap';
 
-const EmptyState = ({ message }) => {
+const EmptyState = ({ message, showSearchButton }) => {
 	return (
-		<div className="loading-indicator">
+		<Row className="empty-state mx-auto">
 			<Row>
-				<Label className="text-muted col-auto">{message}</Label>
+				<Label className="col-12 label text-muted col-auto">{message}</Label>
 			</Row>
 			<Row className="justify-content-center">
-				<Button tag={Link} to="/search" color="primary">
-					Search
-				</Button>
+				{showSearchButton && (
+					<Button tag={Link} to="/search" color="primary">
+						Search
+					</Button>
+				)}
 			</Row>
-		</div>
+		</Row>
 	);
 };
 
 EmptyState.propTypes = {
-	message: PropTypes.string.isRequired
+	message: PropTypes.string.isRequired,
+	showSearchButton: PropTypes.bool
 };
+
+EmptyState.defaultProps = {
+	showSearchButton: false
+};
+
 export default EmptyState;

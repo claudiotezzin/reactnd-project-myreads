@@ -9,7 +9,7 @@
 
 .loading-indicator {
 	position: absolute;
-	top: 40%;
+	margin-top: 6rem;
 	left: 50%;
 	transform: translate(-40%, -50%) scale(2);
 }

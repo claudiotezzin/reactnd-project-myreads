@@ -12,8 +12,6 @@ const headers = {
 	Authorization: token
 };
 
-const shelfIdMapper = ['none', 'currentlyReading', 'wantToRead', 'read'];
-
 export const get = (bookId) =>
 	fetch(`${api}/books/${bookId}`, { headers })
 		.then((res) => res.json())
@@ -24,18 +22,17 @@ export const getAll = () =>
 		.then((res) => res.json())
 		.then((data) => data.books);
 
-export const update = (book, shelfId) =>
+export const update = (book, shelf) =>
 	fetch(`${api}/books/${book.id}`, {
 		method: 'PUT',
 		headers: {
 			...headers,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ shelf: shelfIdMapper[shelfId] })
+		body: JSON.stringify({ shelf })
 	}).then((res) => res.json());
 
 export const search = (query) => {
-	console.log(JSON.stringify({ query }));
 	return fetch(`${api}/search`, {
 		method: 'POST',
 		headers: {

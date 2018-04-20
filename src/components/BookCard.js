@@ -8,24 +8,24 @@ import { GetShelfIdFromName } from 'utils/helper.js';
 class BookCard extends React.Component {
 	static propTypes = {
 		book: PropTypes.object.isRequired,
-		isChangingState: PropTypes.bool.isRequired,
 		onUpdateBookShelf: PropTypes.func.isRequired
 	};
 
 	state = {
 		shelfSelected: GetShelfIdFromName(this.props.book.shelf),
-		isChangingState: this.props.isChangingState,
 		showDetail: false
 	};
 
+	isUpdating = false;
+
 	onRadioBtnClick(currentSelected) {
-		const newShelfId = currentSelected === this.state.shelfSelected ? 0 : currentSelected;
+		const oldShelfId = GetShelfIdFromName(this.props.book.shelf);
 
-		this.props.onUpdateBookShelf(this.props.book, this.state.shelfSelected, currentSelected);
-
-		this.setState((state) => ({
-			shelfSelected: newShelfId,
-			isChangingState: true
+		this.props.onUpdateBookShelf(this.props.book, oldShelfId, currentSelected);
+		this.isUpdating = true;
+		// this.forceUpdate();
+		this.setState((prevState) => ({
+			shelfSelected: currentSelected === prevState.shelfSelected ? 0 : currentSelected
 		}));
 	}
 
@@ -34,6 +34,10 @@ class BookCard extends React.Component {
 			showDetail: !this.state.showDetail
 		});
 	};
+
+	componentDidUpdate() {
+		this.isUpdating = false;
+	}
 
 	render() {
 		const { book } = this.props;
@@ -67,7 +71,7 @@ class BookCard extends React.Component {
 					>
 						<i className="fa fa-info" aria-hidden="true" />
 					</Button>
-					{this.state.isChangingState && <LoadingIndicator />}
+					{this.isUpdating && <LoadingIndicator />}
 					<Row noGutters>
 						<ButtonGroup className="btn-block">
 							<Button

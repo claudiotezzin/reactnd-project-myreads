@@ -3,71 +3,29 @@ import PropTypes from 'prop-types';
 import SingleShelf from 'components/SingleShelf';
 import ShelvesFilter from 'components/ShelvesFilter';
 import EmptyState from 'components/EmptyState';
-import * as BooksAPI from 'api/BooksAPI';
+import { Shelves } from 'utils/helper.js';
 
 class ShelvesPage extends React.Component {
 	static propTypes = {
-		myBooks: PropTypes.array.isRequired
+		myBooks: PropTypes.array.isRequired,
+		onUpdateBookShelf: PropTypes.func.isRequired
 	};
 
 	state = {
-		shownShelf: 0, // 0 - All, 1 - Reading, 2 - To read, 3 - Read
-		shelves: {
-			readingShelf: {
-				id: 1,
-				name: 'currentlyReading',
-				displayName: 'Reading',
-				books: this.props.myBooks.filter((book) => book.shelf === 'currentlyReading')
-			},
-			wantToReadShelf: {
-				id: 2,
-				name: 'wantToRead',
-				displayName: 'To Read',
-				books: this.props.myBooks.filter((book) => book.shelf === 'wantToRead')
-			},
-			readShelf: {
-				id: 3,
-				name: 'read',
-				displayName: 'Read',
-				books: this.props.myBooks.filter((book) => book.shelf === 'read')
-			}
-		}
+		shownShelf: 0 // 0 - All, 1 - Reading, 2 - To read, 3 - Read
 	};
 
 	onFilterChanged = (currentFilterSelected) => {
 		this.setState({ shownShelf: currentFilterSelected });
 	};
 
-	onUpdateBookShelf = (changedBook, oldShelfId, newShelfId) => {
-		BooksAPI.update(changedBook, newShelfId === oldShelfId ? 0 : newShelfId)
-			.then((shelfs) => {
-				this.setState((prevState) => {
-					const { readingShelf, wantToReadShelf, readShelf } = prevState.shelves;
-					this.updateShelfIfNeeded(readingShelf, changedBook, oldShelfId, newShelfId);
-					this.updateShelfIfNeeded(wantToReadShelf, changedBook, oldShelfId, newShelfId);
-					this.updateShelfIfNeeded(readShelf, changedBook, oldShelfId, newShelfId);
-					prevState.shelves.readingShelf = readingShelf;
-					prevState.shelves.wantToReadShelf = wantToReadShelf;
-					prevState.shelves.readShelf = readShelf;
-					return prevState;
-				});
-			})
-			.catch((error) => console.error(`Error updating book shelf. Error: ${error}`));
-	};
-
-	updateShelfIfNeeded(shelf, changedBook, oldShelfId, newShelfId) {
-		if (shelf.id === oldShelfId) {
-			console.log(`Removing book ${changedBook.id} from shelf ${shelf.name}`);
-			shelf.books = shelf.books.filter((book) => book.id !== changedBook.id);
-		} else if (shelf.id === newShelfId) {
-			console.log(`Adding book ${changedBook.id} to new shelf ${shelf.name}`);
-			shelf.books.push(changedBook);
-		}
-	}
-
 	render() {
-		const { readingShelf, wantToReadShelf, readShelf } = this.state.shelves;
 		const { shownShelf } = this.state;
+		const { readingShelf, wantToReadShelf, readShelf } = Shelves;
+
+		readingShelf.books = this.props.myBooks.filter((book) => book.shelf === 'currentlyReading');
+		wantToReadShelf.books = this.props.myBooks.filter((book) => book.shelf === 'wantToRead');
+		readShelf.books = this.props.myBooks.filter((book) => book.shelf === 'read');
 
 		return (
 			<div className="container main-content">
@@ -80,7 +38,7 @@ class ShelvesPage extends React.Component {
 				{(shownShelf === 0 || shownShelf === readingShelf.id) &&
 					readingShelf.books.length > 0 && (
 						<SingleShelf
-							onUpdateBookShelf={this.onUpdateBookShelf}
+							onUpdateBookShelf={this.props.onUpdateBookShelf}
 							books={readingShelf.books}
 							shelfName={readingShelf.name}
 							shelfDisplayName={readingShelf.displayName}
@@ -90,7 +48,7 @@ class ShelvesPage extends React.Component {
 				{(shownShelf === 0 || shownShelf === wantToReadShelf.id) &&
 					wantToReadShelf.books.length > 0 && (
 						<SingleShelf
-							onUpdateBookShelf={this.onUpdateBookShelf}
+							onUpdateBookShelf={this.props.onUpdateBookShelf}
 							books={wantToReadShelf.books}
 							shelfName={wantToReadShelf.name}
 							shelfDisplayName={wantToReadShelf.displayName}
@@ -100,7 +58,7 @@ class ShelvesPage extends React.Component {
 				{(shownShelf === 0 || shownShelf === readShelf.id) &&
 					readShelf.books.length > 0 && (
 						<SingleShelf
-							onUpdateBookShelf={this.onUpdateBookShelf}
+							onUpdateBookShelf={this.props.onUpdateBookShelf}
 							books={readShelf.books}
 							shelfName={readShelf.name}
 							shelfDisplayName={readShelf.displayName}
@@ -111,7 +69,10 @@ class ShelvesPage extends React.Component {
 				readingShelf.books.length <= 0 &&
 					wantToReadShelf.books.length <= 0 &&
 					readShelf.books.length <= 0 && (
-						<EmptyState message="You don't have any book in your shaves. Please add some books!!!" />
+						<EmptyState
+							showSearchButton={true}
+							message="You don't have any book in your shaves. Please add some books!!!"
+						/>
 					)}
 			</div>
 		);

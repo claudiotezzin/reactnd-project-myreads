@@ -9,6 +9,11 @@ import LoadingBooks from 'components/LoadingBooks';
 import * as BooksAPI from 'api/BooksAPI';
 
 class SearchPage extends React.Component {
+	static propTypes = {
+		myBooks: PropTypes.array.isRequired,
+		onUpdateBookShelf: PropTypes.func.isRequired
+	};
+
 	state = {
 		query: '',
 		isSearching: false,
@@ -18,10 +23,6 @@ class SearchPage extends React.Component {
 			name: 'Search Result',
 			books: []
 		}
-	};
-
-	static propTypes = {
-		myBooks: PropTypes.array.isRequired
 	};
 
 	availableTags = [
@@ -106,26 +107,25 @@ class SearchPage extends React.Component {
 		'iOS'
 	];
 
-	onTagClicked = (tag) => {
-		this.setState({ query: tag });
-		this.onSearch(tag);
-	};
-
-	onSearch(query) {
-		this.setState({ isSearching: true });
+	onSearch = (query) => {
+		this.setState({ isSearching: true, query: query });
 		BooksAPI.search(query)
 			.then((books) => {
-				const newBooksArray = books.map((book) => {
-					const bookFound = this.props.myBooks.find((myBook) => myBook.id === book.id);
-					return bookFound !== undefined ? bookFound : book;
-				});
+				if (books.error === undefined) {
+					const newBooksArray = books.map((book) => {
+						const bookFound = this.props.myBooks.find(
+							(myBook) => myBook.id === book.id
+						);
+						return bookFound !== undefined ? bookFound : book;
+					});
 
-				this.setState((prevState) => {
-					prevState.isSearching = false;
-					prevState.noResultsFound = false;
-					prevState.searchShelf.books = newBooksArray;
-					return prevState;
-				});
+					this.setState((prevState) => {
+						prevState.isSearching = false;
+						prevState.noResultsFound = false;
+						prevState.searchShelf.books = newBooksArray;
+						return prevState;
+					});
+				}
 			})
 			.catch((err) => {
 				this.setState((prevState) => {
@@ -136,17 +136,13 @@ class SearchPage extends React.Component {
 				});
 				console.log(err);
 			});
-	}
+	};
 
 	render() {
 		const { searchShelf, query, isSearching, noResultsFound } = this.state;
 
 		return (
 			<div className="container main-content">
-				{isSearching && (
-					<LoadingBooks message="We are getting your books from the respective shelves..." />
-				)}
-
 				<Row className="search-row">
 					<Label className="text-muted search-label">Search: </Label>
 					<DebounceInput
@@ -159,21 +155,29 @@ class SearchPage extends React.Component {
 					/>
 				</Row>
 
-				<TagsCloud tags={this.availableTags} onTagClicked={this.onTagClicked} />
+				<TagsCloud tags={this.availableTags} onTagClicked={this.onSearch} />
+
+				{isSearching && (
+					<LoadingBooks
+						className="loading"
+						message="We are getting your books from the respective shelves..."
+					/>
+				)}
 
 				{!isSearching &&
 					searchShelf.books.length > 0 && (
 						<SingleShelf
-							onUpdateBookShelf={this.onUpdateBookShelf}
+							onUpdateBookShelf={this.props.onUpdateBookShelf}
 							books={searchShelf.books}
 							shelfName={'none'}
 							shelfDisplayName={'Search Result'}
 						/>
 					)}
 
-				{noResultsFound && (
-					<EmptyState message="Ops! We didn't found this book. Try to use our predefined tags below search box" />
-				)}
+				{!isSearching &&
+					noResultsFound && (
+						<EmptyState message="Ops! We didn't found this book. Try to use our predefined tags below search box" />
+					)}
 			</div>
 		);
 	}

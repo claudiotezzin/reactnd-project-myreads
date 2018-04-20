@@ -4,9 +4,9 @@ import { Row, Label } from 'reactstrap';
 
 const LoadingBooks = ({ message }) => {
 	return (
-		<div className="loading-indicator">
+		<div className="loading-indicator mx-auto">
 			<Row>
-				<Label className="text-primary col-auto">{message}</Label>
+				<Label className="col-12 text-primary col-auto">{message}</Label>
 			</Row>
 			<Row className="justify-content-center">
 				<svg width="16px" height="12px">

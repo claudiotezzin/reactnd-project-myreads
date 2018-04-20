@@ -170,4 +170,13 @@
 	background-color: #f2f2f2;
 }
 
+.empty-state {
+	margin-top: 2rem;
+}
+
+.label {
+	font-size: 2rem;
+	word-wrap: break-word;
+}
+
 @@import "loading.css";

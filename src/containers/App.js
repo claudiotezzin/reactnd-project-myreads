@@ -6,6 +6,7 @@ import ShelvesPage from 'containers/ShelvesPage';
 import SearchPage from 'containers/SearchPage';
 import LoadingBooks from 'components/LoadingBooks';
 import * as BooksAPI from 'api/BooksAPI';
+import { GetShelfNameFromId } from 'utils/helper.js';
 
 class App extends React.Component {
 	state = {
@@ -23,6 +24,34 @@ class App extends React.Component {
 		);
 	}
 
+	onUpdateBookShelf = (changedBook, oldShelfId, newShelfId) => {
+		const shelfId = newShelfId === oldShelfId ? 0 : newShelfId;
+		const shelf = GetShelfNameFromId(shelfId);
+
+		BooksAPI.update(changedBook, shelf)
+			.then((shelfs) => {
+				const index = this.state.myBooks.findIndex((book) => book.id === changedBook.id);
+
+				return this.setState((prevState) => {
+					if (index === -1) {
+						// Add shelf
+						changedBook.shelf = GetShelfNameFromId(newShelfId);
+						prevState.myBooks.push(changedBook);
+					} else if (shelfId === 0) {
+						// Remove book
+						prevState.myBooks = prevState.myBooks.filter(
+							(book) => book.id !== changedBook.id
+						);
+					} else {
+						// Change shelf
+						prevState.myBooks[index].shelf = GetShelfNameFromId(newShelfId);
+					}
+					return prevState;
+				});
+			})
+			.catch((error) => console.error(`Error updating book shelf. Error: ${error}`));
+	};
+
 	render() {
 		return (
 			<div>
@@ -35,14 +64,24 @@ class App extends React.Component {
 					<Route
 						exact
 						path="/"
-						render={() => <ShelvesPage myBooks={this.state.myBooks} />}
+						render={() => (
+							<ShelvesPage
+								onUpdateBookShelf={this.onUpdateBookShelf}
+								myBooks={this.state.myBooks}
+							/>
+						)}
 					/>
 				)}
 				{!this.state.isLoading && (
 					<Route
 						exact
 						path="/search"
-						render={() => <SearchPage myBooks={this.state.myBooks} />}
+						render={() => (
+							<SearchPage
+								onUpdateBookShelf={this.onUpdateBookShelf}
+								myBooks={this.state.myBooks}
+							/>
+						)}
 					/>
 				)}
 				<Footer />
