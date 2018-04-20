@@ -32,11 +32,6 @@ class AppNavbar extends React.Component {
 								Search Books
 							</NavLink>
 						</NavItem>
-						<NavItem>
-							<NavLink className="navLink" tag={Link} to="/about">
-								About
-							</NavLink>
-						</NavItem>
 					</Nav>
 				</Collapse>
 			</Navbar>

@@ -108,9 +108,19 @@ class SearchPage extends React.Component {
 	];
 
 	onSearch = (query) => {
-		this.setState({ isSearching: true, query: query });
-		BooksAPI.search(query)
-			.then((books) => {
+		console.log(`query: ${query}`);
+		if (query === '') {
+			this.setState((prevState) => {
+				prevState.isSearching = false;
+				prevState.noResultsFound = false;
+				prevState.query = query;
+				prevState.searchShelf.books = [];
+				return prevState;
+			});
+		} else {
+			this.setState({ isSearching: true, query: query });
+			BooksAPI.search(query).then((books) => {
+				console.log(`books.error: ${JSON.stringify(books.error)}`);
 				if (books.error === undefined) {
 					const newBooksArray = books.map((book) => {
 						const bookFound = this.props.myBooks.find(
@@ -125,17 +135,16 @@ class SearchPage extends React.Component {
 						prevState.searchShelf.books = newBooksArray;
 						return prevState;
 					});
+				} else {
+					this.setState((prevState) => {
+						prevState.isSearching = false;
+						prevState.noResultsFound = true;
+						prevState.searchShelf.books = [];
+						return prevState;
+					});
 				}
-			})
-			.catch((err) => {
-				this.setState((prevState) => {
-					prevState.isSearching = false;
-					prevState.noResultsFound = true;
-					prevState.searchShelf.books = [];
-					return prevState;
-				});
-				console.log(err);
 			});
+		}
 	};
 
 	render() {
@@ -147,7 +156,7 @@ class SearchPage extends React.Component {
 					<Label className="text-muted search-label">Search: </Label>
 					<DebounceInput
 						className="search-input"
-						minLength={3}
+						minLength={1}
 						placeholder="Book Title"
 						debounceTimeout={500}
 						value={query}
