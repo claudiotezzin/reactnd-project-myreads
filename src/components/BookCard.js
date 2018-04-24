@@ -48,11 +48,7 @@ class BookCard extends React.Component {
 		return (
 			<div>
 				{this.state.showDetail && (
-					<BookDetailModal
-						book={book}
-						onToggle={this.onToggleDetail}
-						shallOpen={this.state.showDetail}
-					/>
+					<BookDetailModal book={book} onToggle={this.onToggleDetail} />
 				)}
 
 				<Card className="card-container">

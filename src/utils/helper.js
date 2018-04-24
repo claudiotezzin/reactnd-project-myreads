@@ -1,7 +1,11 @@
 const shelves = ['none', 'currentlyReading', 'wantToRead', 'read'];
 
 export function GetShelfIdFromName(shelfName) {
-	return shelves.indexOf(shelfName);
+	let index = shelves.indexOf(shelfName);
+	if (index < 0) {
+		index = 0;
+	}
+	return index;
 }
 
 export function GetShelfNameFromId(shelfId) {

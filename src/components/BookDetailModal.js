@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import ReactStars from 'react-stars';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-const BookDetailModal = ({ onToggle, shallOpen, book }) => {
+const BookDetailModal = ({ onToggle, book }) => {
 	return (
 		<div>
 			<Modal isOpen={true} toggle={onToggle} className="modal-dialog-centered">
 				<ModalHeader toggle={onToggle}>{book.title}</ModalHeader>
 				<ModalBody>{book.description}</ModalBody>
-				<ModalBody>Auhtors: {book.authors.join(', ')}</ModalBody>
+				{book.authors !== undefined && (
+					<ModalBody>Auhtors: {book.authors.join(', ')}</ModalBody>
+				)}
 				<ModalBody>Publisher: {book.publisher}</ModalBody>
 				<ModalBody className="row no-gutters">
 					Rating:{' '}
@@ -26,7 +28,6 @@ const BookDetailModal = ({ onToggle, shallOpen, book }) => {
 };
 
 BookDetailModal.propTypes = {
-	shallOpen: PropTypes.bool.isRequired,
 	onToggle: PropTypes.func.isRequired,
 	book: PropTypes.object.isRequired
 };
